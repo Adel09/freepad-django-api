@@ -131,12 +131,15 @@ def loginuser(request):
     username = request.data['email']
     password = request.data['password']
     user = authenticate(username=username, password=password)
+    profile = Profile.objects.get(owner=user)
+    category = profile.category
     token = Token.objects.get(user=user)
     if user is not None:
         login(request, user)
         res = {
             "status" : 200,
             "message" : "Login successful",
+            "category" : category,
             "data" : {
                 "token" : token.key
             }
@@ -165,7 +168,8 @@ def createRequest(request):
             title=f'Help {user.first_name} in {profile.city}',
             city = profile.city,
             state = profile.state,
-            pharmacy = profile.pharmacy
+            pharmacy = profile.pharmacy,
+            image = profile.image
         )
         padrequest.save()
         res = {

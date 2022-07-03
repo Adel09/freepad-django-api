@@ -20,9 +20,16 @@ class PadRequest(models.Model):
     name = models.CharField(max_length=80, blank=True)
     title = models.CharField(max_length=80, blank=True)
     quantity = models.IntegerField(default=1)
+    image = models.CharField(max_length=90, blank=True, default="https://complianz.io/wp-content/uploads/2019/03/placeholder-300x202.jpg")
     donated = models.IntegerField(default=0)
     completed = models.BooleanField(default=False)
     city = models.CharField(max_length=80, blank=True)
     state = models.CharField(max_length=80, blank=True)
     pharmacy = models.CharField(max_length=90, blank=True)
+
+class Donation(models.Model):
+    donated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    donated_to = models.ForeignKey(PadRequest, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=1)
+    when = models.DateTimeField(auto_created=True, auto_now=True)
 
