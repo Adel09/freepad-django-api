@@ -14,7 +14,7 @@ class Profile(models.Model):
     wallet = models.DecimalField(max_digits=7, default=0.00, decimal_places=2)
 
     def __str__(self):
-        return self.owner
+        return f'{self.owner.first_name} {self.owner.last_name}'
 
 
 
@@ -40,5 +40,5 @@ class Donation(models.Model):
     when = models.DateTimeField(auto_created=True, auto_now=True)
 
     def __str__(self):
-        return f'Donation by {self.donated_by} to {self.donated_to}'
+        return f'Donation by {self.donated_by.first_name} to {self.donated_to}'
 

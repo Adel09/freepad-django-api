@@ -67,7 +67,7 @@ def getProfile(request):
                 "status" : 200,
                 "message" : "success",
                 "data" : {
-                    "name" : f'{user.first_name} {user.last_name}',
+                    "name" : f'{user.first_name}',
                     "email" : user.email,
                     "category" : profile.category,
                     "image" : profile.image.url,
@@ -83,7 +83,7 @@ def getProfile(request):
                 "status" : 200,
                 "message" : "success",
                 "data" : {
-                    "name" : f'{user.first_name} {user.last_name}',
+                    "name" : f'{user.first_name}',
                     "email" : user.email,
                     "category" : profile.category,
                     "image" : profile.image.url,
