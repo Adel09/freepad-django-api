@@ -6,7 +6,7 @@ class Profile(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.CharField(max_length=80, blank=True)
     phone = models.CharField(max_length=80, blank=True)
-    image = models.FileField(null=True, upload_to="profile/", default="media/profile/placeholder.png")
+    image = models.FileField(null=True, upload_to="profile/", default="profile/placeholder.png")
     city = models.CharField(max_length=80, blank=True)
     state = models.CharField(max_length=80, blank=True)
     pharmacy = models.CharField(max_length=90, blank=True)
