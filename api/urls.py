@@ -7,4 +7,5 @@ urlpatterns = [
     path('v1/requests', views.getRequests), #GET
     path('v1/login', views.loginuser), #POST
     path('v1/requests/create', views.createRequest), #POST
+    path('v1/donate/<int:id>', views.donate), #GET
 ]

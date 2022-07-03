@@ -13,6 +13,9 @@ class Profile(models.Model):
     people_helped = models.IntegerField(default=0)
     wallet = models.DecimalField(max_digits=7, default=0.00, decimal_places=2)
 
+    def __str__(self):
+        return self.owner
+
 
 
 class PadRequest(models.Model):
@@ -27,9 +30,15 @@ class PadRequest(models.Model):
     state = models.CharField(max_length=80, blank=True)
     pharmacy = models.CharField(max_length=90, blank=True)
 
+    def __str__(self):
+        return self.title
+
 class Donation(models.Model):
     donated_by = models.ForeignKey(User, on_delete=models.CASCADE)
     donated_to = models.ForeignKey(PadRequest, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1)
     when = models.DateTimeField(auto_created=True, auto_now=True)
+
+    def __str__(self):
+        return f'Donation by {self.donated_by} to {self.donated_to}'
 

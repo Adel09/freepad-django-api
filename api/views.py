@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.contrib.auth import login, authenticate
-from .models import Profile, PadRequest
+from .models import Profile, PadRequest, Donation
 from django.db import IntegrityError
 import traceback
 from .serializers import RequestSerializer
@@ -152,6 +152,30 @@ def loginuser(request):
         }
         return JsonResponse(res, safe=False, status=401)
 
+@api_view(['GET'])
+def donate(request, id):
+    if request.user.is_authenticated:
+        user = request.user
+        profile = Profile.objects.get(owner=user)
+        if profile.category == 'DONOR':
+            padrequest = PadRequest.objects.get(id=id)
+            donation = Donation.objects.create(
+                donated_by=user,
+                donated_to=padrequest
+            )
+            donation.save()
+            res = {
+                "status" : 200,
+                "message" : "success",
+                "thanks" : "Thank you for your donation"
+            }
+            return JsonResponse(res, safe=False, status=200) 
+        else:
+            res = {
+                "status" : 400,
+                "message" : "Only Donors can donate!"
+            }
+            return JsonResponse(res, safe=False, status=400) 
 
 
 
@@ -169,7 +193,7 @@ def createRequest(request):
             city = profile.city,
             state = profile.state,
             pharmacy = profile.pharmacy,
-            image = profile.image
+            image = profile.image.url
         )
         padrequest.save()
         res = {
