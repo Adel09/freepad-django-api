@@ -1,1 +1,1 @@
-web: gunicorn freepad.wsgi --log-file -
+web:gunicorn freepad.wsgi --log-file -
