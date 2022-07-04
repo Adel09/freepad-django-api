@@ -163,6 +163,7 @@ def donate(request, id):
         profile = Profile.objects.get(owner=user)
         if profile.category == 'DONOR':
             profile.wallet = profile.wallet - Decimal(1500)
+            profile.people_helped = profile.people_helped + 1
             profile.save()
             padrequest = PadRequest.objects.get(id=id)
             requester = Profile.objects.get(owner=padrequest.owner)
