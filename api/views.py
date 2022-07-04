@@ -10,6 +10,7 @@ from django.db import IntegrityError
 import traceback
 from .serializers import RequestSerializer
 from decimal import Decimal
+from .external import SMSService
 
 
 # Create your views here.
@@ -164,11 +165,16 @@ def donate(request, id):
             profile.wallet = profile.wallet - Decimal(1500)
             profile.save()
             padrequest = PadRequest.objects.get(id=id)
+            requester = Profile.objects.get(owner=padrequest.owner)
             donation = Donation.objects.create(
                 donated_by=user,
                 donated_to=padrequest
             )
+            SMSService.donationComplete(phone=requester.phone, pharmacy=requester.pharmacy)
+            SMSService.donationThanks(phone=profile.phone, title=padrequest.title)
             donation.save()
+            padrequest.delete()
+
             res = {
                 "status" : 200,
                 "message" : "success",
