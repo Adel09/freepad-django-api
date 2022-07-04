@@ -83,6 +83,7 @@ def getProfile(request):
             }
             return JsonResponse(res, status=200, safe=False)
         elif profile.category == "RECIPIENT":
+            myrequests = PadRequest.objects.filter(owner=user)
             res = {
                 "status" : 200,
                 "message" : "success",
@@ -93,7 +94,8 @@ def getProfile(request):
                     "image" : profile.image.url,
                     "pharmacy" : profile.pharmacy,
                     "city" : profile.city,
-                    "state" : profile.state
+                    "state" : profile.state,
+                    "requests" : myrequests.count()
                 }
             }
             return JsonResponse(res, status=200, safe=False)
@@ -162,7 +164,7 @@ def donate(request, id):
         user = request.user
         profile = Profile.objects.get(owner=user)
         if profile.category == 'DONOR':
-            profile.wallet = profile.wallet - Decimal(1500)
+            profile.wallet = profile.wallet - Decimal(500)
             profile.people_helped = profile.people_helped + 1
             profile.save()
             padrequest = PadRequest.objects.get(id=id)
