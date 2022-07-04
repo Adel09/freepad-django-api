@@ -171,7 +171,7 @@ def donate(request, id):
                 donated_to=padrequest
             )
             SMSService.donationComplete(phone=requester.phone, pharmacy=requester.pharmacy)
-            SMSService.donationThanks(phone=profile.phone, title=padrequest.title)
+            #SMSService.donationThanks(phone=profile.phone, title=padrequest.title)
             donation.save()
             padrequest.delete()
 
