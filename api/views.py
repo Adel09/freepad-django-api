@@ -9,6 +9,7 @@ from .models import Profile, PadRequest, Donation
 from django.db import IntegrityError
 import traceback
 from .serializers import RequestSerializer
+from decimal import Decimal
 
 
 # Create your views here.
@@ -63,6 +64,7 @@ def getProfile(request):
         user = request.user
         profile = Profile.objects.get(owner=request.user)
         if profile.category == "DONOR":
+            donations = Donation.objects.filter(donated_by=user)
             res = {
                 "status" : 200,
                 "message" : "success",
@@ -74,7 +76,8 @@ def getProfile(request):
                     "wallet" : profile.wallet,
                     "people_helped" : profile.people_helped,
                     "city" : profile.city,
-                    "state" : profile.state
+                    "state" : profile.state,
+                    "donations" : donations.count()
                 }
             }
             return JsonResponse(res, status=200, safe=False)
@@ -158,6 +161,8 @@ def donate(request, id):
         user = request.user
         profile = Profile.objects.get(owner=user)
         if profile.category == 'DONOR':
+            profile.wallet = profile.wallet - Decimal(1500)
+            profile.save()
             padrequest = PadRequest.objects.get(id=id)
             donation = Donation.objects.create(
                 donated_by=user,

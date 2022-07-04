@@ -11,7 +11,7 @@ class Profile(models.Model):
     state = models.CharField(max_length=80, blank=True)
     pharmacy = models.CharField(max_length=90, blank=True)
     people_helped = models.IntegerField(default=0)
-    wallet = models.DecimalField(max_digits=7, default=0.00, decimal_places=2)
+    wallet = models.DecimalField(max_digits=7, default=10000.00, decimal_places=2)
 
     def __str__(self):
         return f'{self.owner.first_name} {self.owner.last_name}'
